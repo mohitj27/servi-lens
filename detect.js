@@ -9,7 +9,14 @@ class App extends React.Component {
     top: 150,
     left: 150,
   };
-
+  
+  list = {
+    xCordinate: [],
+    yCordinate: [],
+    xBottomCordinate: [],
+    yBottomCordinate: [],
+    title: [],
+  }
 
   detectFromVideoFrame = (model, video) => {
     model.detect(video).then(predictions => {
@@ -46,12 +53,16 @@ class App extends React.Component {
       const textHeight = parseInt(font, 10);
       // draw top left rectangle
       ctx.fillRect(x, y, textWidth + 10, textHeight + 10);
+      this.list.xCordinate.push(x);
+      this.list.yCordinate.push(y);
       // draw bottom left rectangle
       ctx.fillRect(x, y + height - textHeight, textWidth + 15, textHeight + 10);
-
+      this.list.xBottomCordinate.push(x);
+      this.list.yBottomCordinate.push(y + height - textHeight );
       // Draw the text last to ensure it's on top.
       ctx.fillStyle = "#000000";
       ctx.fillText(prediction.class, x, y);
+      this.list.title.push(prediction.class);
       ctx.fillText(prediction.score.toFixed(2), x, y + height - textHeight);
     });
   };
